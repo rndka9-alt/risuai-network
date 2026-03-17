@@ -1,0 +1,65 @@
+name: risuai
+
+services:
+  risuai:
+    container_name: risuai
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "6001"
+    volumes:
+      - /Volumes/T7/risuai/save:/app/save
+
+  with-sqlite:
+    container_name: with-sqlite
+    build:
+      context: ../with-sqlite
+    profiles: [sqlite]
+    restart: always
+    expose:
+      - "3001"
+    environment:
+      - PORT=3001
+      - UPSTREAM=http://risuai:6001
+      - DB_PATH=/data/proxy.db
+    volumes:
+      - sqlite-data:/data
+    depends_on:
+      - risuai
+
+  sync:
+    container_name: sync
+    build:
+      context: ../sync
+    profiles: [sync]
+    restart: always
+    expose:
+      - "3000"
+    env_file:
+      - ../sync/.env
+    environment:
+      - PORT=3000
+      - UPSTREAM=${SYNC_UPSTREAM:-http://risuai:6001}
+    depends_on:
+      - risuai
+
+  caddy:
+    image: caddy:alpine
+    container_name: caddy
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    expose:
+      - "8080"
+    env_file:
+      - .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+
+volumes:
+  sqlite-data:
+  caddy_data:
