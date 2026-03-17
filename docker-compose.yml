@@ -25,7 +25,7 @@ services:
       - UPSTREAM=http://risuai:6001
       - DB_PATH=/data/proxy.db
     volumes:
-      - sqlite-data:/data
+      - ${SQLITE_DATA_DIR:-sqlite-data}:/data
     depends_on:
       - risuai
 
