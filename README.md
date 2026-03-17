@@ -144,7 +144,7 @@ services:
     expose:
       - "6001"
     volumes:
-      - /Volumes/T7/risuai/save:/app/save
+      - ${RISUAI_SAVE_DIR:-risuai-save}:/app/save
 
   with-sqlite:
     container_name: with-sqlite
