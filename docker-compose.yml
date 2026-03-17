@@ -4,7 +4,7 @@ services:
   risuai:
     container_name: risuai
     build:
-      context: ../../../
+      context: ${RISUAI_DIR:-../../../}
       dockerfile: Dockerfile
     restart: always
     expose:
@@ -15,7 +15,7 @@ services:
   with-sqlite:
     container_name: with-sqlite
     build:
-      context: ../with-sqlite
+      context: ${SQLITE_DIR:-../with-sqlite}
     profiles: [sqlite]
     restart: always
     expose:
@@ -32,13 +32,13 @@ services:
   sync:
     container_name: sync
     build:
-      context: ../sync
+      context: ${SYNC_DIR:-../sync}
     profiles: [sync]
     restart: always
     expose:
       - "3000"
     env_file:
-      - ../sync/.env
+      - ${SYNC_DIR:-../sync}/.env
     environment:
       - PORT=3000
       - UPSTREAM=${SYNC_UPSTREAM:-http://risuai:6001}
