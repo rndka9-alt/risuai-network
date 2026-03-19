@@ -26,6 +26,7 @@ services:
       - DB_PATH=/data/proxy.db
     volumes:
       - ${SQLITE_DATA_DIR:-sqlite-data}:/data
+      - ${RISUAI_SAVE_DIR:-risuai-save}:/risuai-save:ro
     depends_on:
       - risuai
 
