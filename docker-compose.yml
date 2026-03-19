@@ -50,8 +50,9 @@ services:
     container_name: caddy
     restart: always
     ports:
-      - "${CADDY_HTTPS_PORT:-6001}:443"
-      - "${CADDY_HTTP_PORT:-6002}:80"
+      - "127.0.0.1:${CADDY_HTTPS_PORT:-6001}:443"
+      - "127.0.0.1:${CADDY_HTTP_PORT:-6002}:80"
+      - "127.0.0.1:9090:9090"
     expose:
       - "8080"
     env_file:
@@ -63,7 +64,6 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
-    profiles: [tunnel]
     restart: always
     command: tunnel run
     environment:
