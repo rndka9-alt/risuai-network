@@ -17,7 +17,7 @@ services:
     build:
       context: ${SQLITE_DIR:-../with-sqlite}
     profiles: [sqlite]
-    restart: always
+    restart: no
     expose:
       - "3001"
     environment:
@@ -35,7 +35,7 @@ services:
     build:
       context: ${SYNC_DIR:-../sync}
     profiles: [sync]
-    restart: always
+    restart: no
     expose:
       - "3000"
     env_file:
