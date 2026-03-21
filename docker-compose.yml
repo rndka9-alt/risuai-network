@@ -30,6 +30,23 @@ services:
     depends_on:
       - risuai
 
+  remote-inlay:
+    container_name: remote-inlay
+    build:
+      context: ${REMOTE_INLAY_DIR:-../remote-inlay}
+    profiles: [remote-inlay]
+    restart: no
+    expose:
+      - "3003"
+    environment:
+      - PORT=3003
+      - UPSTREAM=${REMOTE_INLAY_UPSTREAM:-http://with-sqlite:3001}
+      - DB_PATH=/data/inlays.db
+    volumes:
+      - ${REMOTE_INLAY_DATA_DIR:-remote-inlay-data}:/data
+    depends_on:
+      - risuai
+
   sync:
     container_name: sync
     build:
@@ -43,6 +60,25 @@ services:
     environment:
       - PORT=3000
       - UPSTREAM=${SYNC_UPSTREAM:-http://risuai:6001}
+    volumes:
+      - ${RISUAI_SAVE_DIR:-risuai-save}:/risuai-save:ro
+    depends_on:
+      - risuai
+
+  monitor:
+    container_name: monitor
+    build:
+      context: ${MONITOR_DIR:-../monitor}
+    profiles: [monitor]
+    restart: no
+    ports:
+      - "127.0.0.1:${MONITOR_PORT:-3002}:3002"
+    environment:
+      - PORT=3002
+      - LOG_BUFFER_SIZE=5000
+      - METRICS_RETENTION_MINUTES=180
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - risuai
 
@@ -74,4 +110,5 @@ services:
 
 volumes:
   sqlite-data:
+  remote-inlay-data:
   caddy_data:

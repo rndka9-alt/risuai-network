@@ -18,6 +18,17 @@ Caddyfile, docker-compose.yml, .env 예시 등이 핵심 산출물이다.
 - **DB Proxy** (`risu-files/custom-codes/with-sqlite/`): 리슨 포트, UPSTREAM 인터페이스, 엔드포인트 추가/제거 시
 - **Risuai 루트의 Caddyfile** (`Risuai/Caddyfile`): Caddy 설정이 이 프로젝트와 중복되므로, 어느 한쪽이 변경되면 다른 쪽도 동기화해야 한다
 
+## 개별 서비스 재배포
+
+특정 서비스만 변경했을 때, 해당 서비스만 빌드·재시작하려면 `build`와 `up`을 분리한다.
+`up --build`를 쓰면 `depends_on` 체인 때문에 의존 서비스까지 재시작될 수 있다.
+
+```bash
+# 예: sync만 재배포
+docker compose -f docker-compose.yml build sync && \
+docker compose -f docker-compose.yml --profile sync up -d sync
+```
+
 ### 변경 시 체크리스트
 
 - [ ] 서비스의 리슨 포트가 바뀌었는가? → Caddyfile, docker-compose.yml 업데이트
