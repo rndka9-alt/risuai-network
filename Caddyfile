@@ -17,6 +17,7 @@
         lb_try_interval 250ms
         fail_duration 10s
         max_fails 1
+        unhealthy_status 502
     }
 }
 
@@ -32,6 +33,7 @@
         lb_try_interval 250ms
         fail_duration 10s
         max_fails 1
+        unhealthy_status 502
     }
 }
 
@@ -42,6 +44,7 @@
         lb_try_interval 250ms
         fail_duration 10s
         max_fails 1
+        unhealthy_status 502
     }
 }
 
@@ -52,5 +55,6 @@
         lb_try_interval 250ms
         fail_duration 10s
         max_fails 1
+        unhealthy_status 502
     }
 }
