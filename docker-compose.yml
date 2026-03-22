@@ -40,7 +40,7 @@ services:
       - "3003"
     environment:
       - PORT=3003
-      - UPSTREAM=${REMOTE_INLAY_UPSTREAM:-http://with-sqlite:3001}
+      - UPSTREAM=${REMOTE_INLAY_UPSTREAM:-http://caddy:8081}
       - DB_PATH=/data/inlays.db
       - BLOB_DIR=/data/blobs
     volumes:
@@ -95,6 +95,7 @@ services:
       - "127.0.0.1:9090:9090"
     expose:
       - "8080"
+      - "8081"
     env_file:
       - .env
     volumes:

@@ -13,11 +13,10 @@
     }
     reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
         lb_policy first
-        lb_try_duration 750ms
-        lb_try_interval 250ms
-        fail_duration 10s
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
         max_fails 1
-        unhealthy_status 502
     }
 }
 
@@ -29,32 +28,41 @@
     }
     reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
         lb_policy first
-        lb_try_duration 750ms
-        lb_try_interval 250ms
-        fail_duration 10s
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
         max_fails 1
-        unhealthy_status 502
     }
 }
 
 :9090 {
     reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
         lb_policy first
-        lb_try_duration 750ms
-        lb_try_interval 250ms
-        fail_duration 10s
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
         max_fails 1
-        unhealthy_status 502
     }
 }
 
+# sync 제외 체인 진입점 (sync → 여기로 포워딩)
 :8080 {
-    reverse_proxy remote-inlay:3003 with-sqlite:3001 risuai:6001 {
+    reverse_proxy with-sqlite:3001 remote-inlay:3003 risuai:6001 {
         lb_policy first
-        lb_try_duration 750ms
-        lb_try_interval 250ms
-        fail_duration 10s
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
         max_fails 1
-        unhealthy_status 502
+    }
+}
+
+# remote-inlay 전용 upstream (with-sqlite → risuai failover)
+:8081 {
+    reverse_proxy with-sqlite:3001 risuai:6001 {
+        lb_policy first
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
+        max_fails 1
     }
 }
