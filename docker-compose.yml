@@ -42,6 +42,7 @@ services:
       - PORT=3003
       - UPSTREAM=${REMOTE_INLAY_UPSTREAM:-http://with-sqlite:3001}
       - DB_PATH=/data/inlays.db
+      - BLOB_DIR=/data/blobs
     volumes:
       - ${REMOTE_INLAY_DATA_DIR:-remote-inlay-data}:/data
     depends_on:
