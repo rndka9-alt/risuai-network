@@ -78,6 +78,7 @@ services:
       - PORT=3002
       - LOG_BUFFER_SIZE=5000
       - METRICS_RETENTION_MINUTES=180
+      - SYNC_URL=${MONITOR_SYNC_URL:-http://sync:3000}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
