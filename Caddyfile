@@ -46,6 +46,7 @@
 }
 
 # sync 제외 체인 진입점 (sync → 여기로 포워딩)
+# ⚠ 순서가 스크립트 주입과 캐싱에 영향을 줌. 수정 전 사용자 승인 필요.
 :8080 {
     reverse_proxy remote-inlay:3003 with-sqlite:3001 risuai:6001 {
         lb_policy first
