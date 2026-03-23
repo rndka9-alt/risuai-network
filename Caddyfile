@@ -47,7 +47,7 @@
 
 # sync 제외 체인 진입점 (sync → 여기로 포워딩)
 :8080 {
-    reverse_proxy with-sqlite:3001 remote-inlay:3003 risuai:6001 {
+    reverse_proxy remote-inlay:3003 with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms
         lb_try_interval 50ms
