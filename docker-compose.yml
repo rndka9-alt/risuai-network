@@ -61,6 +61,7 @@ services:
     environment:
       - PORT=3000
       - UPSTREAM=${SYNC_UPSTREAM:-http://risuai:6001}
+      - RISUAI_SAVE_MOUNT=/risuai-save
       - MONITOR_URL=${MONITOR_URL:-}
     volumes:
       - ${RISUAI_SAVE_DIR:-risuai-save}:/risuai-save:ro
