@@ -11,7 +11,7 @@
             header Content-Type *
         }
     }
-    reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
+    reverse_proxy sync:3000 remote-inlay:3003 setting-searchbar:3004 with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms
         lb_try_interval 50ms
@@ -26,7 +26,7 @@
             header Content-Type *
         }
     }
-    reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
+    reverse_proxy sync:3000 remote-inlay:3003 setting-searchbar:3004 with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms
         lb_try_interval 50ms
@@ -36,7 +36,7 @@
 }
 
 :9090 {
-    reverse_proxy sync:3000 remote-inlay:3003 with-sqlite:3001 risuai:6001 {
+    reverse_proxy sync:3000 remote-inlay:3003 setting-searchbar:3004 with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms
         lb_try_interval 50ms
@@ -48,7 +48,7 @@
 # sync 제외 체인 진입점 (sync → 여기로 포워딩)
 # ⚠ 순서가 스크립트 주입과 캐싱에 영향을 줌. 수정 전 사용자 승인 필요.
 :8080 {
-    reverse_proxy remote-inlay:3003 with-sqlite:3001 risuai:6001 {
+    reverse_proxy remote-inlay:3003 setting-searchbar:3004 with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms
         lb_try_interval 50ms
@@ -57,8 +57,19 @@
     }
 }
 
-# remote-inlay 전용 upstream (with-sqlite → risuai failover)
+# remote-inlay 전용 upstream (setting-searchbar → with-sqlite → risuai failover)
 :8081 {
+    reverse_proxy setting-searchbar:3004 with-sqlite:3001 risuai:6001 {
+        lb_policy first
+        lb_try_duration 200ms
+        lb_try_interval 50ms
+        fail_duration 30s
+        max_fails 1
+    }
+}
+
+# setting-searchbar 전용 upstream (with-sqlite → risuai failover)
+:8082 {
     reverse_proxy with-sqlite:3001 risuai:6001 {
         lb_policy first
         lb_try_duration 200ms

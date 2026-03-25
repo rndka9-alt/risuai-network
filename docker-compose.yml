@@ -48,6 +48,20 @@ services:
     depends_on:
       - risuai
 
+  setting-searchbar:
+    container_name: setting-searchbar
+    build:
+      context: ${SEARCHBAR_DIR:-../setting-searchbar}
+    profiles: [searchbar]
+    restart: no
+    expose:
+      - "3004"
+    environment:
+      - PORT=3004
+      - UPSTREAM=${SEARCHBAR_UPSTREAM:-http://caddy:8082}
+    depends_on:
+      - risuai
+
   sync:
     container_name: sync
     build:
@@ -97,6 +111,7 @@ services:
     expose:
       - "8080"
       - "8081"
+      - "8082"
     env_file:
       - .env
     volumes:
