@@ -29,6 +29,10 @@ docker compose -f docker-compose.yml build sync && \
 docker compose -f docker-compose.yml --profile sync up -d sync
 ```
 
+## 문서
+
+- 서비스 구성, 포트, 프로필, 환경변수 등이 변경되면 README.md도 함께 업데이트한다.
+
 ### 변경 시 체크리스트
 
 - [ ] 서비스의 리슨 포트가 바뀌었는가? → Caddyfile, docker-compose.yml 업데이트
