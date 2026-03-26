@@ -6,6 +6,7 @@
     handle /_internal/* {
         respond 403
     }
+    header /assets/* Cache-Control "public, max-age=31536000, immutable"
     encode zstd gzip {
         match {
             header Content-Type *
@@ -21,6 +22,7 @@
 }
 
 :80 {
+    header /assets/* Cache-Control "public, max-age=31536000, immutable"
     encode zstd gzip {
         match {
             header Content-Type *
