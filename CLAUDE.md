@@ -29,6 +29,19 @@ docker compose -f docker-compose.yml build sync && \
 docker compose -f docker-compose.yml --profile sync up -d sync
 ```
 
+### BuildKit 캐시 주의
+
+`docker compose build`는 BuildKit 레이어 캐시를 적극 활용한다.
+특히 risuai 본체처럼 빌드 컨텍스트가 큰 서비스는, 파일이 변경되었는데도
+캐시된 레이어가 사용되어 빌드 산출물이 반영되지 않는 경우가 있다.
+
+컨테이너가 시작 직후 즉시 종료(exit 0)되거나 예상과 다르게 동작하면,
+**`--no-cache`로 풀 빌드**를 시도한다:
+
+```bash
+docker compose -f docker-compose.yml build --no-cache risuai
+```
+
 ## 문서
 
 - 서비스 구성, 포트, 프로필, 환경변수 등이 변경되면 README.md도 함께 업데이트한다.
