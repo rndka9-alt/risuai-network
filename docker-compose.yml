@@ -97,6 +97,7 @@ services:
       - SYNC_URL=${MONITOR_SYNC_URL:-http://sync:3000}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${RISUAI_SAVE_DIR:-risuai-save}:/risuai-save:ro
     depends_on:
       - risuai
 
