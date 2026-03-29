@@ -59,6 +59,9 @@ services:
     environment:
       - PORT=3004
       - UPSTREAM=${SEARCHBAR_UPSTREAM:-http://caddy:8082}
+      - RISUAI_SAVE_MOUNT=/risuai-save
+    volumes:
+      - ${RISUAI_SAVE_DIR:-risuai-save}:/risuai-save:ro
     depends_on:
       - risuai
 
