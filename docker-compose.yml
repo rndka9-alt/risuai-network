@@ -109,14 +109,12 @@ services:
     container_name: caddy
     restart: always
     ports:
-      - "127.0.0.1:${CADDY_HTTPS_PORT:-6001}:443"
       # LAN/Tailscale에서 접근 시 http://는 Secure Context가 아니라
       # Web Crypto API 등이 동작하지 않는다.
       # HTTPS 접근이 필요하면 Tailscale Serve를 사용:
-      #   tailscale serve --bg 6002
+      #   tailscale serve --bg 9090
       #   → https://<hostname>.ts.net 으로 접근 (유효한 인증서 자동 발급)
-      - "127.0.0.1:${CADDY_HTTP_PORT:-6002}:80"
-      - "127.0.0.1:9090:9090"
+      - "${CADDY_MGMT_PORT:-9090}:9090"
     expose:
       - "8080"
       - "8081"
